@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Analisis Butir Soal</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f0f4ff;
+  --white: #ffffff;
+  --border: #e2e8f8;
+  --primary: #4361ee;
+  --primary-light: #eef0fd;
+  --secondary: #06d6a0;
+  --secondary-light: #e8faf5;
+  --warn: #f4a261;
+  --warn-light: #fff4eb;
+  --danger: #ef476f;
+  --danger-light: #fdeef2;
+  --purple: #7b5ea7;
+  --purple-light: #f2eef9;
+  --text: #1a1f36;
+  --text-2: #4a5272;
+  --text-3: #8892b0;
+  --radius-sm: 10px;
+  --radius: 16px;
+  --shadow: 0 2px 16px rgba(67,97,238,0.08);
+  --shadow-md: 0 4px 24px rgba(67,97,238,0.14);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.blob-wrap { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+.blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.32; }
+.blob-1 { width: 420px; height: 420px; background: #c5d0ff; top: -140px; right: -80px; animation: drift 10s ease-in-out infinite alternate; }
+.blob-2 { width: 300px; height: 300px; background: #b8f5e6; bottom: -80px; left: -60px; animation: drift 13s ease-in-out infinite alternate-reverse; }
+.blob-3 { width: 200px; height: 200px; background: #ffd6b0; top: 55%; left: 38%; animation: drift 8s ease-in-out infinite alternate; }
+@keyframes drift { from { transform: translate(0,0) scale(1); } to { transform: translate(28px,18px) scale(1.06); } }
+
+.wrap { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 0 16px 80px; }
+
+/* HEADER */
+header { padding: 36px 0 24px; text-align: center; }
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--primary-light); color: var(--primary);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; padding: 5px 14px; border-radius: 99px;
+  margin-bottom: 14px; border: 1px solid rgba(67,97,238,0.18);
+}
+header h1 {
+  font-size: clamp(24px, 6vw, 40px); font-weight: 800; line-height: 1.15;
+  background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: 8px;
+}
+header p { color: var(--text-3); font-size: 13px; }
+
+/* BUTTONS */
+.action-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 28px; }
+.btn-main {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: linear-gradient(135deg, var(--primary), #6d4aff);
+  color: #fff; border: none; border-radius: 99px;
+  padding: 13px 26px; font-family: inherit;
+  font-size: 14px; font-weight: 700; cursor: pointer;
+  box-shadow: 0 6px 20px rgba(67,97,238,0.35);
+  transition: transform 0.18s, box-shadow 0.18s, opacity 0.18s;
+}
+.btn-main:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(67,97,238,0.45); }
+.btn-main:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-sec {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--white); color: var(--primary);
+  border: 1.5px solid var(--border); border-radius: 99px;
+  padding: 12px 22px; font-family: inherit;
+  font-size: 14px; font-weight: 600; cursor: pointer;
+  box-shadow: var(--shadow); transition: transform 0.18s, box-shadow 0.18s;
+}
+.btn-sec:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+/* ERROR */
+.error-box {
+  background: var(--danger-light); border: 1px solid rgba(239,71,111,0.22);
+  border-radius: var(--radius-sm); padding: 14px 18px;
+  color: var(--danger); font-size: 13px; line-height: 1.6;
+  margin-bottom: 20px; display: none;
+}
+
+/* LOADING */
+#loading { display: none; text-align: center; padding: 52px 0; }
+.spinner { width: 42px; height: 42px; margin: 0 auto 14px; border-radius: 50%; border: 3px solid var(--border); border-top-color: var(--primary); animation: spin 0.75s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+#loading p { color: var(--text-3); font-size: 13px; }
+
+/* EMPTY */
+#empty { text-align: center; padding: 52px 0; }
+.empty-icon { font-size: 48px; margin-bottom: 14px; display: block; }
+#empty p { color: var(--text-3); font-size: 14px; line-height: 1.7; max-width: 300px; margin: 0 auto; }
+
+/* STATS */
+.stats-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 12px; margin-bottom: 20px;
+  animation: fadeUp 0.4s ease both;
+}
+@media(min-width:500px) { .stats-grid { grid-template-columns: repeat(3,1fr); } }
+@media(min-width:700px) { .stats-grid { grid-template-columns: repeat(5,1fr); } }
+
+.stat-card {
+  background: var(--white); border-radius: var(--radius);
+  padding: 16px; border: 1px solid var(--border);
+  box-shadow: var(--shadow); text-align: center; position: relative; overflow: hidden;
+}
+.stat-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--ac, var(--primary)); }
+.stat-ico { font-size: 20px; margin-bottom: 6px; display: block; }
+.stat-val { font-size: 26px; font-weight: 800; color: var(--ac, var(--primary)); line-height: 1; margin-bottom: 3px; }
+.stat-lbl { font-size: 10.5px; color: var(--text-3); font-weight: 600; }
+
+/* FILTER */
+.filter-box {
+  background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 16px 18px; margin-bottom: 16px; box-shadow: var(--shadow);
+  display: none; animation: fadeUp 0.4s ease both;
+}
+.filter-box h3 { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 10px; }
+.filter-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.fg { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 130px; }
+.fg label { font-size: 11px; color: var(--text-3); font-weight: 600; }
+select {
+  background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  padding: 9px 12px; color: var(--text); font-family: inherit;
+  font-size: 13px; font-weight: 500; outline: none; cursor: pointer;
+  transition: border-color 0.2s;
+}
+select:focus { border-color: var(--primary); }
+
+/* EXPORT */
+.export-row { display: flex; justify-content: flex-end; margin-bottom: 12px; }
+.btn-export {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--white); color: var(--primary);
+  border: 1.5px solid var(--primary); border-radius: 99px;
+  padding: 8px 18px; font-family: inherit;
+  font-size: 12px; font-weight: 700; cursor: pointer; transition: background 0.15s;
+}
+.btn-export:hover { background: var(--primary-light); }
+
+/* CARD LIST — mobile */
+.card-list { display: flex; flex-direction: column; gap: 12px; }
+@media(min-width:680px) { .card-list { display: none; } }
+
+.soal-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px;
+  box-shadow: var(--shadow); transition: box-shadow 0.2s;
+}
+.soal-card:hover { box-shadow: var(--shadow-md); }
+
+.card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; gap: 8px; }
+.card-left { display: flex; align-items: center; gap: 10px; }
+.card-num {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--primary-light); color: var(--primary);
+  font-size: 13px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.card-mapel {
+  font-size: 11.5px; font-weight: 700; color: var(--primary);
+  background: var(--primary-light); padding: 3px 10px;
+  border-radius: 6px;
+}
+
+.badge { display: inline-flex; align-items: center; gap: 4px; padding: 5px 12px; border-radius: 99px; font-size: 11px; font-weight: 700; }
+.b-baik   { background: var(--secondary-light); color: #059669; }
+.b-revisi { background: var(--warn-light);      color: #c2550d; }
+.b-tolak  { background: var(--danger-light);    color: var(--danger); }
+
+.metrics { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; }
+@media(min-width:400px) { .metrics { grid-template-columns: repeat(4,1fr); } }
+
+.metric { background: var(--bg); border-radius: var(--radius-sm); padding: 10px 12px; }
+.m-lbl { font-size: 9.5px; color: var(--text-3); font-weight: 700; margin-bottom: 4px; letter-spacing: 0.06em; text-transform: uppercase; }
+.m-val { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 500; }
+.m-bar { height: 4px; border-radius: 2px; background: var(--border); margin-top: 5px; overflow: hidden; }
+.m-bar-f { height: 100%; border-radius: 2px; transition: width 0.5s ease; }
+.m-sub { font-size: 10px; color: var(--text-3); margin-top: 3px; }
+
+/* TABLE — desktop */
+.tbl-wrap { display: none; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+@media(min-width:680px) { .tbl-wrap { display: block; } }
+.tbl-scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  padding: 11px 14px; text-align: left;
+  font-size: 10px; letter-spacing: 0.12em; font-weight: 700;
+  color: var(--text-3); text-transform: uppercase;
+  background: var(--bg); border-bottom: 1px solid var(--border); white-space: nowrap;
+}
+tbody tr { border-bottom: 1px solid var(--border); transition: background 0.12s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--bg); }
+tbody td { padding: 11px 14px; font-size: 12.5px; white-space: nowrap; vertical-align: middle; }
+.tbl-num { width: 30px; height: 30px; border-radius: 8px; background: var(--primary-light); color: var(--primary); font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; }
+.tbl-mapel { background: var(--primary-light); color: var(--primary); border-radius: 6px; padding: 2px 9px; font-size: 11px; font-weight: 700; }
+.t-bar { display: flex; align-items: center; gap: 7px; }
+.t-track { width: 50px; height: 5px; border-radius: 3px; background: var(--border); overflow: hidden; flex-shrink: 0; }
+.t-fill  { height: 100%; border-radius: 3px; }
+.mono { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+
+/* LEGEND */
+.legend {
+  background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 20px; margin-top: 18px; box-shadow: var(--shadow); display: none;
+  animation: fadeUp 0.4s ease both;
+}
+.legend-title { font-size: 11px; font-weight: 700; color: var(--text-2); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.legend-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px,1fr)); gap: 18px; }
+.legend-group h4 { font-size: 10.5px; font-weight: 700; color: var(--text-3); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+.legend-item { font-size: 12px; color: var(--text-2); margin-bottom: 5px; display: flex; gap: 8px; }
+.legend-item strong { min-width: 88px; color: var(--text); font-weight: 600; }
+
+/* RESULTS SECTION */
+.results-wrap { animation: fadeUp 0.4s ease both 0.1s; }
+
+/* EXCEL CONFIG */
+.excel-config {
+  background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 16px 18px; margin-bottom: 16px; box-shadow: var(--shadow);
+  display: none; animation: fadeUp 0.4s ease both;
+}
+.excel-config h3 { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px; }
+.config-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+@media(max-width:600px) { .config-row { grid-template-columns: 1fr; } }
+.config-field { display: flex; flex-direction: column; gap: 6px; }
+.config-label { font-size: 12px; font-weight: 600; color: var(--text-2); }
+.config-field input[type="text"],
+.config-field input[type="file"] {
+  background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  padding: 9px 12px; color: var(--text); font-family: inherit;
+  font-size: 13px; outline: none; cursor: pointer; transition: border-color 0.2s;
+}
+.config-field input[type="text"] { cursor: text; }
+.config-field input[type="text"]:focus,
+.config-field input[type="file"]:focus { border-color: var(--primary); }
+.config-file-label { display: inline-block; color: var(--text-3); font-size: 11px; margin-top: 4px; }
+
+@keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+</style>
+</head>
+<body>
+
+<div class="blob-wrap">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+
+<div class="wrap">
+
+  <header>
+    <div class="chip">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Edu Analytics
+    </div>
+    <h1>Analisis Butir Soal</h1>
+    <p>Tingkat Kesulitan · Daya Pembeda · Validitas · Reliabilitas</p>
+  </header>
+
+  <div class="action-row">
+    <button class="btn-main" id="btnFetch" onclick="fetchData()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Muat Data Ujian
+    </button>
+    <button class="btn-sec" onclick="loadDemo()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Coba Demo
+    </button>
+  </div>
+
+  <div class="error-box" id="errorBox"></div>
+
+  <div id="loading">
+    <div class="spinner"></div>
+    <p>Mengambil data dari server &amp; menghitung analisis…</p>
+  </div>
+
+  <div id="empty">
+    <span class="empty-icon">📊</span>
+    <p>Klik <strong>Muat Data Ujian</strong> untuk mengambil langsung dari sistem ujian, atau coba <strong>Demo</strong>.</p>
+  </div>
+
+  <div class="stats-grid" id="statsGrid" style="display:none"></div>
+
+  <div class="filter-box" id="filterBox">
+    <h3>Filter Hasil</h3>
+    <div class="filter-row">
+      <div class="fg">
+        <label>Mata Pelajaran</label>
+        <select id="mapelSelect" onchange="renderResults()"></select>
+      </div>
+      <div class="fg">
+        <label>Status Soal</label>
+        <select id="statusSelect" onchange="renderResults()">
+          <option value="">Semua Status</option>
+          <option value="Baik">✅ Baik Digunakan</option>
+          <option value="Revisi">⚠️ Perlu Revisi</option>
+          <option value="Tolak">❌ Ditolak</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="excel-config" id="excelConfig">
+    <h3>⚙️ Konfigurasi Excel</h3>
+    <div class="config-row">
+      <div class="config-field">
+        <label class="config-label">📋 Judul Laporan</label>
+        <input type="text" id="excelTitle" placeholder="Contoh: Analisis Butir Soal Ujian Tengah Semester" value="">
+      </div>
+      <div class="config-field">
+        <label class="config-label">🏫 Nama Sekolah/Institusi</label>
+        <input type="text" id="excelSchool" placeholder="Contoh: SMP Negeri 1 Cikalongkulon" value="">
+      </div>
+    </div>
+  </div>
+
+  <div class="results-wrap" id="resultsWrap" style="display:none">
+    <div class="export-row">
+      <button class="btn-export" onclick="exportExcel()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Export Excel
+      </button>
+      <button class="btn-export" onclick="exportCSV()" style="margin-left: 8px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Export CSV
+      </button>
+    </div>
+    <div class="card-list"  id="cardList"></div>
+    <div class="tbl-wrap">
+      <div class="tbl-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>No</th><th>Mata Pelajaran</th><th>Tingkat Kesulitan</th><th>Kat. TK</th>
+              <th>Daya Pembeda</th><th>Kat. DP</th><th>Validitas (r)</th><th>Kat. Val</th>
+              <th>Reliabilitas α</th><th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend" id="legendBox">
+    <div class="legend-title">Panduan Interpretasi</div>
+    <div class="legend-grid">
+      <div class="legend-group">
+        <h4>Tingkat Kesulitan</h4>
+        <div class="legend-item"><strong>TK &lt; 0.30</strong>Sukar</div>
+        <div class="legend-item"><strong>0.30 – 0.70</strong>Sedang ✓</div>
+        <div class="legend-item"><strong>TK &gt; 0.70</strong>Mudah</div>
+      </div>
+      <div class="legend-group">
+        <h4>Daya Pembeda</h4>
+        <div class="legend-item"><strong>DP &lt; 0.10</strong>Sangat Jelek</div>
+        <div class="legend-item"><strong>0.10 – 0.19</strong>Jelek</div>
+        <div class="legend-item"><strong>0.20 – 0.39</strong>Cukup</div>
+        <div class="legend-item"><strong>0.40 – 0.69</strong>Baik ✓</div>
+        <div class="legend-item"><strong>≥ 0.70</strong>Sangat Baik ✓</div>
+      </div>
+      <div class="legend-group">
+        <h4>Validitas (r)</h4>
+        <div class="legend-item"><strong>r &lt; 0.20</strong>Sangat Rendah</div>
+        <div class="legend-item"><strong>0.20 – 0.39</strong>Rendah</div>
+        <div class="legend-item"><strong>0.40 – 0.59</strong>Cukup</div>
+        <div class="legend-item"><strong>0.60 – 0.79</strong>Tinggi</div>
+        <div class="legend-item"><strong>≥ 0.80</strong>Sangat Tinggi</div>
+      </div>
+      <div class="legend-group">
+        <h4>Status Soal</h4>
+        <div class="legend-item"><strong style="color:#059669">✅ Baik</strong>DP ≥ 0.20 &amp; TK 0.30–0.70</div>
+        <div class="legend-item"><strong style="color:#c2550d">⚠️ Revisi</strong>DP 0.10–0.19 atau TK luar range</div>
+        <div class="legend-item"><strong style="color:var(--danger)">❌ Tolak</strong>DP &lt; 0.10</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
+// ── LIBRARY STATUS ──
+let xlsxReady = false;
+if(typeof XLSX !== 'undefined') xlsxReady = true;
+window.addEventListener('load', () => {
+  if(typeof XLSX !== 'undefined') xlsxReady = true;
+});
+setTimeout(() => {
+  if(typeof XLSX !== 'undefined') xlsxReady = true;
+}, 2000);
+
+// ── HARDCODED GAS URL ──
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbxNs7iibCNph-VhHkj87YI4VxU04ZdsdznI3qUL4sESMYA9SCbgvG8FgBt6iawGBQlf/exec';
+
+// ─── ANALYSIS ───
+function pJ(r) {
+  if (!r) return {};
+  if (typeof r === 'object') return r;
+  try { return JSON.parse(r); } catch(e) { return {}; }
+}
+
+function tk(responses) {
+  const n = responses.length;
+  return responses[0].s.map((_, i) => responses.filter(r => r.s[i]===1).length / n);
+}
+
+function dp(responses, nQ) {
+  const n = responses.length, h = Math.floor(n/2);
+  if (!h) return Array(nQ).fill(0);
+  const sorted = [...responses].sort((a,b)=>b.t-a.t);
+  const up = sorted.slice(0,h), dn = sorted.slice(n-h);
+  return Array.from({length:nQ},(_,i)=>(up.filter(r=>r.s[i]===1).length - dn.filter(r=>r.s[i]===1).length)/h);
+}
+
+function val(responses, nQ) {
+  if (responses.length<2) return Array(nQ).fill(0);
+  const tots = responses.map(r=>r.t);
+  const mT = tots.reduce((a,b)=>a+b,0)/tots.length;
+  const sdT = Math.sqrt(tots.reduce((a,b)=>a+(b-mT)**2,0)/tots.length)||1;
+  return Array.from({length:nQ},(_,i)=>{
+    const ok = responses.filter(r=>r.s[i]===1);
+    const p = ok.length/responses.length, q=1-p;
+    if(!p||p===1) return 0;
+    const mB = ok.reduce((a,r)=>a+r.t,0)/ok.length;
+    return ((mB-mT)/sdT)*Math.sqrt(p/q);
+  });
+}
+
+function alpha(responses, nQ) {
+  if (responses.length<2||nQ<2) return 0;
+  const n=responses.length;
+  const sv = Array.from({length:nQ},(_,i)=>{
+    const v=responses.map(r=>r.s[i]), m=v.reduce((a,b)=>a+b,0)/n;
+    return v.reduce((a,b)=>a+(b-m)**2,0)/n;
+  });
+  const tots=responses.map(r=>r.t), mT=tots.reduce((a,b)=>a+b,0)/n;
+  const vT=tots.reduce((a,b)=>a+(b-mT)**2,0)/n;
+  return vT===0?0:(nQ/(nQ-1))*(1-sv.reduce((a,b)=>a+b,0)/vT);
+}
+
+const kTK  = p  => p<.30?'Sukar':p<=.70?'Sedang':'Mudah';
+const kDP  = d  => d<.10?'Sangat Jelek':d<.20?'Jelek':d<.40?'Cukup':d<.70?'Baik':'Sangat Baik';
+const kVal = r  => {const v=Math.abs(r); return v<.20?'Sangat Rendah':v<.40?'Rendah':v<.60?'Cukup':v<.80?'Tinggi':'Sangat Tinggi';};
+const stat = (d,p)=> d<.10?'Tolak':(d>=.20&&p>=.30&&p<=.70)?'Baik':'Revisi';
+
+function prosesMapel(rows, nama) {
+  let kunci={};
+  for(const r of rows){const k=pJ(r['kunci jawaban']); if(Object.keys(k).length){kunci=k;break;}}
+  const keys=Object.keys(kunci).sort((a,b)=>+a-+b), nQ=keys.length;
+  if(!nQ) return [];
+  const resp=rows.map(row=>{
+    const js=pJ(row['jawaban siswa']);
+    const s=keys.map(k=>(js[k]||'').toString().toUpperCase()===(kunci[k]||'').toString().toUpperCase()?1:0);
+    return{s,t:s.reduce((a,b)=>a+b,0)};
+  });
+  const tkA=tk(resp),dpA=dp(resp,nQ),vA=val(resp,nQ),a=alpha(resp,nQ);
+  return keys.map((k,i)=>({no:k,mapel:nama,tk:tkA[i],tkK:kTK(tkA[i]),dp:dpA[i],dpK:kDP(dpA[i]),v:vA[i],vK:kVal(vA[i]),a,st:stat(dpA[i],tkA[i])}));
+}
+
+// ─── STATE ───
+let ALL = [];
+
+async function fetchData() {
+  setLoad(true); hideErr();
+  try {
+    const res  = await fetch(`${GAS_URL}?action=getHasil`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    if (!json.success) throw new Error(json.message||'GAS error');
+    const arr  = json.hasil;
+    if (!Array.isArray(arr)||!arr.length) throw new Error('Belum ada data hasil ujian. Pastikan siswa sudah submit ujian.');
+    process(arr);
+  } catch(e){ showErr(e.message); setLoad(false); }
+}
+
+function loadDemo() {
+  const kunci={"1":"A","2":"B","3":"C","4":"A","5":"B","6":"D","7":"A","8":"C","9":"B","10":"A"};
+  const mapels=[{n:'Matematika'},{n:'Bhs. Indonesia'},{n:'IPA'}];
+  const arr=[];
+  mapels.forEach(({n})=>{
+    for(let s=0;s<30;s++){
+      const js={};
+      Object.keys(kunci).forEach(k=>{
+        const o=['A','B','C','D'];
+        js[k]=Math.random()<(s<10?.85:s<20?.60:.35)?kunci[k]:o[Math.floor(Math.random()*4)];
+      });
+      arr.push({'mata pelajaran':n,'jawaban siswa':JSON.stringify(js),'kunci jawaban':JSON.stringify(kunci),'hasil':0});
+    }
+  });
+  process(arr);
+}
+
+function process(arr) {
+  const g={};
+  arr.forEach(r=>{const m=r['mata pelajaran']||'Tidak Diketahui'; if(!g[m])g[m]=[]; g[m].push(r);});
+  ALL=[];
+  let hasKey=false;
+  Object.entries(g).forEach(([n,rows])=>{
+    if(!Object.keys(pJ(rows[0]['kunci jawaban'])).length) return;
+    hasKey=true; ALL.push(...prosesMapel(rows,n));
+  });
+  setLoad(false);
+  if(!hasKey){
+    showErr('Server tidak mengembalikan "kunci jawaban". Tambahkan field tersebut ke fungsi getHasil di GAS lalu re-deploy. Gunakan Demo untuk melihat contoh tampilan.');
+    return;
+  }
+  renderStats(); renderFilter(); renderResults();
+  show('filterBox'); show('excelConfig'); show('resultsWrap'); show('legendBox');
+  document.getElementById('empty').style.display='none';
+}
+
+// ─── RENDER STATS ───
+function renderStats(){
+  const tot=ALL.length,baik=ALL.filter(r=>r.st==='Baik').length,rev=ALL.filter(r=>r.st==='Revisi').length,tol=ALL.filter(r=>r.st==='Tolak').length;
+  const avg=tot?(ALL.reduce((a,b)=>a+b.a,0)/tot).toFixed(3):'—';
+  const g=document.getElementById('statsGrid');
+  g.style.display='grid';
+  g.innerHTML=`
+    <div class="stat-card" style="--ac:var(--primary)"><span class="stat-ico">📝</span><div class="stat-val">${tot}</div><div class="stat-lbl">Total Soal</div></div>
+    <div class="stat-card" style="--ac:#059669"><span class="stat-ico">✅</span><div class="stat-val" style="color:#059669">${baik}</div><div class="stat-lbl">Baik</div></div>
+    <div class="stat-card" style="--ac:var(--warn)"><span class="stat-ico">⚠️</span><div class="stat-val" style="color:var(--warn)">${rev}</div><div class="stat-lbl">Perlu Revisi</div></div>
+    <div class="stat-card" style="--ac:var(--danger)"><span class="stat-ico">❌</span><div class="stat-val" style="color:var(--danger)">${tol}</div><div class="stat-lbl">Ditolak</div></div>
+    <div class="stat-card" style="--ac:var(--purple)"><span class="stat-ico">🔬</span><div class="stat-val" style="color:var(--purple);font-size:20px">${avg}</div><div class="stat-lbl">Cronbach α</div></div>`;
+}
+
+function renderFilter(){
+  const mapels=[...new Set(ALL.map(r=>r.mapel))];
+  document.getElementById('mapelSelect').innerHTML='<option value="">Semua Mapel</option>'+mapels.map(m=>`<option value="${m}">${m}</option>`).join('');
+}
+
+function renderResults(){
+  const mf=document.getElementById('mapelSelect').value;
+  const sf=document.getElementById('statusSelect').value;
+  let data=ALL;
+  if(mf) data=data.filter(r=>r.mapel===mf);
+  if(sf) data=data.filter(r=>r.st===sf);
+  renderCards(data); renderTable(data);
+}
+
+// ─── COLORS ───
+const cTK=v=>v<.30?'#ef476f':v<=.70?'#06d6a0':'#4361ee';
+const cDP=v=>v<.20?'#ef476f':v<.40?'#f4a261':'#06d6a0';
+const cV =v=>{const a=Math.abs(v);return a<.40?'#ef476f':a<.60?'#f4a261':'#06d6a0';};
+const bCls=s=>s==='Baik'?'b-baik':s==='Revisi'?'b-revisi':'b-tolak';
+const bLbl=s=>s==='Baik'?'✅ Baik':s==='Revisi'?'⚠️ Revisi':'❌ Tolak';
+
+function renderCards(data){
+  const el=document.getElementById('cardList');
+  if(!data.length){el.innerHTML=`<div style="text-align:center;padding:36px;color:var(--text-3);font-size:14px">Tidak ada soal untuk filter ini.</div>`;return;}
+  el.innerHTML=data.map(r=>`
+    <div class="soal-card">
+      <div class="card-top">
+        <div class="card-left">
+          <div class="card-num">${r.no}</div>
+          <span class="card-mapel">${r.mapel}</span>
+        </div>
+        <span class="badge ${bCls(r.st)}">${bLbl(r.st)}</span>
+      </div>
+      <div class="metrics">
+        <div class="metric">
+          <div class="m-lbl">Tingkat Kesulitan</div>
+          <div class="m-val" style="color:${cTK(r.tk)}">${(r.tk*100).toFixed(1)}%</div>
+          <div class="m-bar"><div class="m-bar-f" style="width:${(r.tk*100).toFixed(1)}%;background:${cTK(r.tk)}"></div></div>
+          <div class="m-sub">${r.tkK}</div>
+        </div>
+        <div class="metric">
+          <div class="m-lbl">Daya Pembeda</div>
+          <div class="m-val" style="color:${cDP(r.dp)}">${r.dp.toFixed(2)}</div>
+          <div class="m-bar"><div class="m-bar-f" style="width:${Math.max(0,r.dp*100).toFixed(1)}%;background:${cDP(r.dp)}"></div></div>
+          <div class="m-sub">${r.dpK}</div>
+        </div>
+        <div class="metric">
+          <div class="m-lbl">Validitas (r)</div>
+          <div class="m-val" style="color:${cV(r.v)}">${r.v.toFixed(2)}</div>
+          <div class="m-bar"><div class="m-bar-f" style="width:${Math.min(100,Math.abs(r.v)*100).toFixed(1)}%;background:${cV(r.v)}"></div></div>
+          <div class="m-sub">${r.vK}</div>
+        </div>
+        <div class="metric">
+          <div class="m-lbl">Cronbach α</div>
+          <div class="m-val" style="color:var(--purple)">${r.a.toFixed(3)}</div>
+          <div class="m-sub">Reliabilitas</div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function renderTable(data){
+  const tb=document.getElementById('tableBody');
+  if(!data.length){tb.innerHTML=`<tr><td colspan="10" style="text-align:center;padding:30px;color:var(--text-3)">Tidak ada soal untuk filter ini.</td></tr>`;return;}
+  tb.innerHTML=data.map(r=>`
+    <tr>
+      <td><div class="tbl-num">${r.no}</div></td>
+      <td><span class="tbl-mapel">${r.mapel}</span></td>
+      <td><div class="t-bar"><div class="t-track"><div class="t-fill" style="width:${(r.tk*100).toFixed(1)}%;background:${cTK(r.tk)}"></div></div><span class="mono" style="color:${cTK(r.tk)}">${(r.tk*100).toFixed(1)}%</span></div></td>
+      <td style="color:${cTK(r.tk)};font-weight:600;font-size:11.5px">${r.tkK}</td>
+      <td><div class="t-bar"><div class="t-track"><div class="t-fill" style="width:${Math.max(0,r.dp*100).toFixed(1)}%;background:${cDP(r.dp)}"></div></div><span class="mono" style="color:${cDP(r.dp)}">${r.dp.toFixed(2)}</span></div></td>
+      <td style="color:${cDP(r.dp)};font-weight:600;font-size:11.5px">${r.dpK}</td>
+      <td><div class="t-bar"><div class="t-track"><div class="t-fill" style="width:${Math.min(100,Math.abs(r.v)*100).toFixed(1)}%;background:${cV(r.v)}"></div></div><span class="mono" style="color:${cV(r.v)}">${r.v.toFixed(2)}</span></div></td>
+      <td style="color:${cV(r.v)};font-weight:600;font-size:11.5px">${r.vK}</td>
+      <td class="mono" style="color:var(--purple)">${r.a.toFixed(3)}</td>
+      <td><span class="badge ${bCls(r.st)}">${bLbl(r.st)}</span></td>
+    </tr>`).join('');
+}
+
+// ─── EXPORT ───
+function exportCSV(){
+  if(!ALL.length){alert('Tidak ada data.');return;}
+  const hdr=['No Soal','Mata Pelajaran','TK (%)','Kat. TK','Daya Pembeda','Kat. DP','Validitas','Kat. Val','Cronbach α','Status'];
+  const rows=ALL.map(r=>[r.no,r.mapel,(r.tk*100).toFixed(2),r.tkK,r.dp.toFixed(3),r.dpK,r.v.toFixed(3),r.vK,r.a.toFixed(3),r.st==='Baik'?'Baik Digunakan':r.st==='Revisi'?'Perlu Revisi':'Ditolak']);
+  const csv=[hdr,...rows].map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='analisis_butir_soal.csv'; a.click();
+}
+
+function exportExcel(){
+  try {
+    if(!ALL.length){alert('Tidak ada data.');return;}
+    
+    if(!xlsxReady || typeof XLSX === 'undefined'){
+      alert('Library Excel sedang dimuat, silakan tunggu 2 detik lalu coba lagi.');
+      if(typeof XLSX === 'undefined'){
+        const script=document.createElement('script');
+        script.src='https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';
+        script.onload=()=>{xlsxReady=true;};
+        script.onerror=()=>{alert('Gagal memuat library Excel dari CDN. Periksa koneksi internet Anda.');};
+        document.head.appendChild(script);
+      }
+      return;
+    }
+    
+    // Get title and school from inputs
+    const excelTitle = document.getElementById('excelTitle').value || 'Analisis Butir Soal';
+    const excelSchool = document.getElementById('excelSchool').value || '';
+    const numCols = 10;
+    
+    // Create data structure
+    const headerRows = [];
+    if(excelTitle) headerRows.push(Array(numCols).fill(excelTitle));
+    if(excelSchool) headerRows.push(Array(numCols).fill(excelSchool));
+    if(headerRows.length > 0) headerRows.push(Array(numCols).fill(''));
+    
+    // Main data
+    const hdr=['No Soal','Mata Pelajaran','TK (%)','Kat. TK','Daya Pembeda','Kat. DP','Validitas','Kat. Val','Cronbach α','Status'];
+    const rows=ALL.map(r=>[r.no,r.mapel,(r.tk*100).toFixed(2),r.tkK,r.dp.toFixed(3),r.dpK,r.v.toFixed(3),r.vK,r.a.toFixed(3),r.st==='Baik'?'Baik Digunakan':r.st==='Revisi'?'Perlu Revisi':'Ditolak']);
+    const data=[...headerRows, hdr, ...rows];
+    
+    // Create worksheet
+    const ws=XLSX.utils.aoa_to_sheet(data);
+    ws['!cols']=[{wch:10},{wch:18},{wch:12},{wch:12},{wch:15},{wch:12},{wch:12},{wch:12},{wch:12},{wch:15}];
+    
+    // Define border object yang proper untuk XLSX
+    const createBorder = () => ({
+      top: {style: 'thin', color: {rgb: '000000'}},
+      bottom: {style: 'thin', color: {rgb: '000000'}},
+      left: {style: 'thin', color: {rgb: '000000'}},
+      right: {style: 'thin', color: {rgb: '000000'}}
+    });
+    
+    // Process all cells
+    for(let row = 0; row < data.length; row++) {
+      for(let col = 0; col < numCols; col++) {
+        const cellRef = XLSX.utils.encode_cell({r: row, c: col});
+        const cell = ws[cellRef];
+        if(!cell) continue;
+        
+        const border = createBorder();
+        
+        // Title row styling
+        if(excelTitle && row === 0) {
+          cell.s = {
+            font: {bold: true, size: 14, color: {rgb: 'FFFFFF'}},
+            fill: {fgColor: {rgb: '4361EE'}},
+            alignment: {horizontal: 'center', vertical: 'center', wrapText: true},
+            border
+          };
+        }
+        // School row styling
+        else if(excelSchool && row === (excelTitle ? 1 : 0)) {
+          cell.s = {
+            font: {bold: true, size: 12, color: {rgb: 'FFFFFF'}},
+            fill: {fgColor: {rgb: '6D4AFF'}},
+            alignment: {horizontal: 'center', vertical: 'center', wrapText: true},
+            border
+          };
+        }
+        // Empty spacing row
+        else if(row === headerRows.length - 1) {
+          cell.s = {border};
+        }
+        // Header row
+        else if(row === headerRows.length) {
+          cell.s = {
+            font: {bold: true, color: {rgb: 'FFFFFF'}},
+            fill: {fgColor: {rgb: '4361EE'}},
+            alignment: {horizontal: 'center', vertical: 'center'},
+            border
+          };
+        }
+        // Data rows
+        else {
+          const isTextCol = col === 0 || col === 1;
+          cell.s = {
+            alignment: {horizontal: isTextCol ? 'left' : 'center', vertical: 'center'},
+            border
+          };
+        }
+      }
+    }
+    
+    // Create workbook
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Analisis Butir Soal');
+    XLSX.writeFile(wb, 'analisis_butir_soal.xlsx');
+  } catch(err) {
+    console.error('Export Error:', err);
+    alert('Error: ' + err.message);
+  }
+}
+
+// ─── UTILS ───
+function setLoad(on){
+  document.getElementById('loading').style.display=on?'block':'none';
+  document.getElementById('btnFetch').disabled=on;
+  if(on) document.getElementById('empty').style.display='none';
+}
+function showErr(msg){ const b=document.getElementById('errorBox'); b.innerHTML=`<strong>⚠ Error:</strong> ${msg}`; b.style.display='block'; }
+function hideErr(){ document.getElementById('errorBox').style.display='none'; }
+function show(id){ document.getElementById(id).style.display='block'; }
+</script>
+</body>
+</html>
