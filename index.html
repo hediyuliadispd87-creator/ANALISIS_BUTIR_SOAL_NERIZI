@@ -3,306 +3,352 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Analisis Butir Soal</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Analisis Butir Soal — NERIZI</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #f0f4ff;
-  --white: #ffffff;
-  --border: #e2e8f8;
-  --primary: #4361ee;
-  --primary-light: #eef0fd;
-  --secondary: #06d6a0;
-  --secondary-light: #e8faf5;
-  --warn: #f4a261;
-  --warn-light: #fff4eb;
-  --danger: #ef476f;
-  --danger-light: #fdeef2;
-  --purple: #7b5ea7;
-  --purple-light: #f2eef9;
-  --text: #1a1f36;
-  --text-2: #4a5272;
-  --text-3: #8892b0;
-  --radius-sm: 10px;
-  --radius: 16px;
-  --shadow: 0 2px 16px rgba(67,97,238,0.08);
-  --shadow-md: 0 4px 24px rgba(67,97,238,0.14);
+  --bg: #0d0f1a;
+  --bg2: #131526;
+  --bg3: #1a1d30;
+  --card: #181b2e;
+  --card2: #1e2135;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --primary: #5b8cff;
+  --primary2: #3d6ff0;
+  --cyan: #00e5c8;
+  --amber: #ffb547;
+  --red: #ff4d6d;
+  --green: #00d68f;
+  --purple: #a78bfa;
+  --text: #f0f2ff;
+  --text2: #8b90b8;
+  --text3: #4a5080;
+  --r: 14px;
+  --rs: 8px;
+  --sh: 0 4px 32px rgba(0,0,0,0.4);
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 
-body {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  overflow-x: hidden;
+body{
+  font-family:'Sora',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
 }
 
-.blob-wrap { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
-.blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.32; }
-.blob-1 { width: 420px; height: 420px; background: #c5d0ff; top: -140px; right: -80px; animation: drift 10s ease-in-out infinite alternate; }
-.blob-2 { width: 300px; height: 300px; background: #b8f5e6; bottom: -80px; left: -60px; animation: drift 13s ease-in-out infinite alternate-reverse; }
-.blob-3 { width: 200px; height: 200px; background: #ffd6b0; top: 55%; left: 38%; animation: drift 8s ease-in-out infinite alternate; }
-@keyframes drift { from { transform: translate(0,0) scale(1); } to { transform: translate(28px,18px) scale(1.06); } }
+/* GRID BG */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(91,140,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(91,140,255,0.04) 1px, transparent 1px);
+  background-size:40px 40px;
+  pointer-events:none;z-index:0;
+}
 
-.wrap { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 0 16px 80px; }
+/* GLOWS */
+.glow-wrap{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.glow{position:absolute;border-radius:50%;filter:blur(100px);opacity:0.15;}
+.glow-1{width:500px;height:500px;background:var(--primary);top:-200px;right:-100px;animation:gl 12s ease-in-out infinite alternate;}
+.glow-2{width:400px;height:400px;background:var(--cyan);bottom:-150px;left:-100px;animation:gl 9s ease-in-out infinite alternate-reverse;}
+.glow-3{width:250px;height:250px;background:var(--purple);top:50%;left:40%;animation:gl 7s ease-in-out infinite alternate;}
+@keyframes gl{from{transform:translate(0,0)scale(1);}to{transform:translate(30px,20px)scale(1.1);}}
+
+.wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 16px 80px;}
 
 /* HEADER */
-header { padding: 36px 0 24px; text-align: center; }
-.chip {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: var(--primary-light); color: var(--primary);
-  font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
-  text-transform: uppercase; padding: 5px 14px; border-radius: 99px;
-  margin-bottom: 14px; border: 1px solid rgba(67,97,238,0.18);
+header{padding:40px 0 28px;text-align:center;}
+.logo-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(91,140,255,0.12);border:1px solid rgba(91,140,255,0.25);
+  color:var(--primary);font-size:10px;font-weight:700;letter-spacing:0.18em;
+  text-transform:uppercase;padding:6px 16px;border-radius:99px;margin-bottom:18px;
 }
-header h1 {
-  font-size: clamp(24px, 6vw, 40px); font-weight: 800; line-height: 1.15;
-  background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text; margin-bottom: 8px;
-}
-header p { color: var(--text-3); font-size: 13px; }
+.logo-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(1.5);}}
 
-/* BUTTONS */
-.action-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 28px; }
-.btn-main {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: linear-gradient(135deg, var(--primary), #6d4aff);
-  color: #fff; border: none; border-radius: 99px;
-  padding: 13px 26px; font-family: inherit;
-  font-size: 14px; font-weight: 700; cursor: pointer;
-  box-shadow: 0 6px 20px rgba(67,97,238,0.35);
-  transition: transform 0.18s, box-shadow 0.18s, opacity 0.18s;
+header h1{
+  font-size:clamp(22px,5.5vw,38px);font-weight:800;line-height:1.1;
+  letter-spacing:-0.02em;margin-bottom:10px;
 }
-.btn-main:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(67,97,238,0.45); }
-.btn-main:disabled { opacity: 0.45; cursor: not-allowed; }
-.btn-sec {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: var(--white); color: var(--primary);
-  border: 1.5px solid var(--border); border-radius: 99px;
-  padding: 12px 22px; font-family: inherit;
-  font-size: 14px; font-weight: 600; cursor: pointer;
-  box-shadow: var(--shadow); transition: transform 0.18s, box-shadow 0.18s;
+.h1-line1{color:var(--text);}
+.h1-line2{
+  background:linear-gradient(135deg,var(--cyan),var(--primary));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
-.btn-sec:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+header p{color:var(--text3);font-size:12px;font-weight:500;letter-spacing:0.04em;}
+
+
+
+/* ACTIONS */
+.action-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:22px;}
+.btn-main{
+  display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+  color:#fff;border:none;border-radius:99px;
+  padding:14px 28px;font-family:inherit;
+  font-size:13px;font-weight:700;cursor:pointer;
+  box-shadow:0 6px 24px rgba(91,140,255,0.4);
+  transition:transform 0.18s,box-shadow 0.18s,opacity 0.18s;letter-spacing:0.01em;
+}
+.btn-main:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 32px rgba(91,140,255,0.55);}
+.btn-main:disabled{opacity:0.4;cursor:not-allowed;}
+.btn-sec{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,0.05);color:var(--text);
+  border:1px solid var(--border2);border-radius:99px;
+  padding:13px 22px;font-family:inherit;
+  font-size:13px;font-weight:600;cursor:pointer;
+  transition:all 0.15s;
+}
+.btn-sec:hover{background:rgba(255,255,255,0.09);border-color:rgba(255,255,255,0.2);}
+
+/* PROGRESS */
+.progress-wrap{display:none;margin-bottom:20px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;}
+.progress-title{font-size:12px;font-weight:700;color:var(--text2);margin-bottom:14px;letter-spacing:0.08em;text-transform:uppercase;}
+.progress-bars{display:flex;flex-direction:column;gap:10px;}
+.pbar-item{}
+.pbar-label{display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:5px;}
+.pbar-track{height:5px;background:var(--bg3);border-radius:3px;overflow:hidden;}
+.pbar-fill{height:100%;border-radius:3px;transition:width 0.4s ease;background:linear-gradient(90deg,var(--primary),var(--cyan));}
+.pbar-fill.done-fill{background:var(--green);}
+.pbar-fill.err-fill{background:var(--red);}
+.progress-summary{margin-top:14px;font-size:12px;color:var(--text3);text-align:center;}
 
 /* ERROR */
-.error-box {
-  background: var(--danger-light); border: 1px solid rgba(239,71,111,0.22);
-  border-radius: var(--radius-sm); padding: 14px 18px;
-  color: var(--danger); font-size: 13px; line-height: 1.6;
-  margin-bottom: 20px; display: none;
+.error-box{
+  background:rgba(255,77,109,0.1);border:1px solid rgba(255,77,109,0.25);
+  border-radius:var(--rs);padding:14px 18px;
+  color:var(--red);font-size:13px;line-height:1.6;
+  margin-bottom:20px;display:none;
 }
-
-/* LOADING */
-#loading { display: none; text-align: center; padding: 52px 0; }
-.spinner { width: 42px; height: 42px; margin: 0 auto 14px; border-radius: 50%; border: 3px solid var(--border); border-top-color: var(--primary); animation: spin 0.75s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-#loading p { color: var(--text-3); font-size: 13px; }
-
-/* EMPTY */
-#empty { text-align: center; padding: 52px 0; }
-.empty-icon { font-size: 48px; margin-bottom: 14px; display: block; }
-#empty p { color: var(--text-3); font-size: 14px; line-height: 1.7; max-width: 300px; margin: 0 auto; }
 
 /* STATS */
-.stats-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr);
-  gap: 12px; margin-bottom: 20px;
-  animation: fadeUp 0.4s ease both;
+.stats-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:10px;margin-bottom:18px;
+  animation:fadeUp 0.4s ease both;
 }
-@media(min-width:500px) { .stats-grid { grid-template-columns: repeat(3,1fr); } }
-@media(min-width:700px) { .stats-grid { grid-template-columns: repeat(5,1fr); } }
+@media(min-width:480px){.stats-grid{grid-template-columns:repeat(3,1fr);}}
+@media(min-width:700px){.stats-grid{grid-template-columns:repeat(5,1fr);}}
 
-.stat-card {
-  background: var(--white); border-radius: var(--radius);
-  padding: 16px; border: 1px solid var(--border);
-  box-shadow: var(--shadow); text-align: center; position: relative; overflow: hidden;
+.stat-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  padding:16px 14px;text-align:center;position:relative;overflow:hidden;
+  transition:transform 0.15s;
 }
-.stat-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--ac, var(--primary)); }
-.stat-ico { font-size: 20px; margin-bottom: 6px; display: block; }
-.stat-val { font-size: 26px; font-weight: 800; color: var(--ac, var(--primary)); line-height: 1; margin-bottom: 3px; }
-.stat-lbl { font-size: 10.5px; color: var(--text-3); font-weight: 600; }
+.stat-card:hover{transform:translateY(-2px);}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--ac,var(--primary));}
+.stat-ico{font-size:18px;margin-bottom:6px;display:block;}
+.stat-val{font-size:26px;font-weight:800;line-height:1;margin-bottom:3px;}
+.stat-lbl{font-size:10px;color:var(--text3);font-weight:600;letter-spacing:0.06em;text-transform:uppercase;}
 
 /* FILTER */
-.filter-box {
-  background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
-  padding: 16px 18px; margin-bottom: 16px; box-shadow: var(--shadow);
-  display: none; animation: fadeUp 0.4s ease both;
+.filter-box{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  padding:16px;margin-bottom:14px;display:none;
+  animation:fadeUp 0.4s ease both;
 }
-.filter-box h3 { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 10px; }
-.filter-row { display: flex; gap: 10px; flex-wrap: wrap; }
-.fg { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 130px; }
-.fg label { font-size: 11px; color: var(--text-3); font-weight: 600; }
-select {
-  background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--radius-sm);
-  padding: 9px 12px; color: var(--text); font-family: inherit;
-  font-size: 13px; font-weight: 500; outline: none; cursor: pointer;
-  transition: border-color 0.2s;
+.filter-title{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;}
+.filter-row{display:flex;gap:10px;flex-wrap:wrap;}
+.fg{display:flex;flex-direction:column;gap:5px;flex:1;min-width:130px;}
+.fg label{font-size:10.5px;color:var(--text3);font-weight:600;}
+select{
+  background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);
+  padding:9px 12px;color:var(--text);font-family:inherit;
+  font-size:12.5px;font-weight:500;outline:none;cursor:pointer;
+  transition:border-color 0.2s;
 }
-select:focus { border-color: var(--primary); }
+select:focus{border-color:var(--primary);}
+option{background:var(--bg2);}
 
-/* EXPORT */
-.export-row { display: flex; justify-content: flex-end; margin-bottom: 12px; }
-.btn-export {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: var(--white); color: var(--primary);
-  border: 1.5px solid var(--primary); border-radius: 99px;
-  padding: 8px 18px; font-family: inherit;
-  font-size: 12px; font-weight: 700; cursor: pointer; transition: background 0.15s;
+/* EXPORT CONFIG */
+.export-config{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  padding:16px;margin-bottom:14px;display:none;
+  animation:fadeUp 0.4s ease both;
 }
-.btn-export:hover { background: var(--primary-light); }
-
-/* CARD LIST — mobile */
-.card-list { display: flex; flex-direction: column; gap: 12px; }
-@media(min-width:680px) { .card-list { display: none; } }
-
-.soal-card {
-  background: var(--white); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 18px;
-  box-shadow: var(--shadow); transition: box-shadow 0.2s;
+.export-config h3{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;}
+.cfg-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:560px){.cfg-row{grid-template-columns:1fr;}}
+.cfg-field{display:flex;flex-direction:column;gap:5px;}
+.cfg-label{font-size:11px;font-weight:600;color:var(--text2);}
+.cfg-field input{
+  background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);
+  padding:9px 12px;color:var(--text);font-family:inherit;
+  font-size:12.5px;outline:none;transition:border-color 0.2s;
 }
-.soal-card:hover { box-shadow: var(--shadow-md); }
+.cfg-field input:focus{border-color:var(--primary);}
+.cfg-field input::placeholder{color:var(--text3);}
 
-.card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; gap: 8px; }
-.card-left { display: flex; align-items: center; gap: 10px; }
-.card-num {
-  width: 36px; height: 36px; border-radius: 10px;
-  background: var(--primary-light); color: var(--primary);
-  font-size: 13px; font-weight: 800;
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+/* EXPORT ROW */
+.export-row{display:flex;justify-content:flex-end;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.btn-exp{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(91,140,255,0.1);color:var(--primary);
+  border:1px solid rgba(91,140,255,0.3);border-radius:99px;
+  padding:8px 16px;font-family:inherit;
+  font-size:11.5px;font-weight:700;cursor:pointer;transition:all 0.15s;
 }
-.card-mapel {
-  font-size: 11.5px; font-weight: 700; color: var(--primary);
-  background: var(--primary-light); padding: 3px 10px;
-  border-radius: 6px;
+.btn-exp:hover{background:rgba(91,140,255,0.2);}
+
+/* CARDS MOBILE */
+.card-list{display:flex;flex-direction:column;gap:10px;}
+@media(min-width:700px){.card-list{display:none;}}
+
+.soal-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  padding:16px;transition:border-color 0.2s;
 }
+.soal-card:hover{border-color:var(--border2);}
 
-.badge { display: inline-flex; align-items: center; gap: 4px; padding: 5px 12px; border-radius: 99px; font-size: 11px; font-weight: 700; }
-.b-baik   { background: var(--secondary-light); color: #059669; }
-.b-revisi { background: var(--warn-light);      color: #c2550d; }
-.b-tolak  { background: var(--danger-light);    color: var(--danger); }
-
-.metrics { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; }
-@media(min-width:400px) { .metrics { grid-template-columns: repeat(4,1fr); } }
-
-.metric { background: var(--bg); border-radius: var(--radius-sm); padding: 10px 12px; }
-.m-lbl { font-size: 9.5px; color: var(--text-3); font-weight: 700; margin-bottom: 4px; letter-spacing: 0.06em; text-transform: uppercase; }
-.m-val { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 500; }
-.m-bar { height: 4px; border-radius: 2px; background: var(--border); margin-top: 5px; overflow: hidden; }
-.m-bar-f { height: 100%; border-radius: 2px; transition: width 0.5s ease; }
-.m-sub { font-size: 10px; color: var(--text-3); margin-top: 3px; }
-
-/* TABLE — desktop */
-.tbl-wrap { display: none; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
-@media(min-width:680px) { .tbl-wrap { display: block; } }
-.tbl-scroll { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; }
-thead th {
-  padding: 11px 14px; text-align: left;
-  font-size: 10px; letter-spacing: 0.12em; font-weight: 700;
-  color: var(--text-3); text-transform: uppercase;
-  background: var(--bg); border-bottom: 1px solid var(--border); white-space: nowrap;
+.card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:8px;}
+.card-left{display:flex;align-items:center;gap:10px;}
+.card-num{
+  width:34px;height:34px;border-radius:var(--rs);
+  background:rgba(91,140,255,0.15);color:var(--primary);
+  font-size:12px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
 }
-tbody tr { border-bottom: 1px solid var(--border); transition: background 0.12s; }
-tbody tr:last-child { border-bottom: none; }
-tbody tr:hover { background: var(--bg); }
-tbody td { padding: 11px 14px; font-size: 12.5px; white-space: nowrap; vertical-align: middle; }
-.tbl-num { width: 30px; height: 30px; border-radius: 8px; background: var(--primary-light); color: var(--primary); font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; }
-.tbl-mapel { background: var(--primary-light); color: var(--primary); border-radius: 6px; padding: 2px 9px; font-size: 11px; font-weight: 700; }
-.t-bar { display: flex; align-items: center; gap: 7px; }
-.t-track { width: 50px; height: 5px; border-radius: 3px; background: var(--border); overflow: hidden; flex-shrink: 0; }
-.t-fill  { height: 100%; border-radius: 3px; }
-.mono { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+.card-mapel{
+  font-size:11px;font-weight:700;color:var(--cyan);
+  background:rgba(0,229,200,0.1);padding:3px 10px;
+  border-radius:6px;border:1px solid rgba(0,229,200,0.2);
+  max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:4px 11px;border-radius:99px;font-size:10.5px;font-weight:700;}
+.b-baik{background:rgba(0,214,143,0.12);color:var(--green);border:1px solid rgba(0,214,143,0.25);}
+.b-revisi{background:rgba(255,181,71,0.12);color:var(--amber);border:1px solid rgba(255,181,71,0.25);}
+.b-tolak{background:rgba(255,77,109,0.12);color:var(--red);border:1px solid rgba(255,77,109,0.25);}
+
+.metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+@media(min-width:400px){.metrics{grid-template-columns:repeat(4,1fr);}}
+
+.metric{background:var(--bg3);border-radius:var(--rs);padding:10px 12px;border:1px solid var(--border);}
+.m-lbl{font-size:9px;color:var(--text3);font-weight:700;margin-bottom:4px;letter-spacing:0.08em;text-transform:uppercase;}
+.m-val{font-family:'DM Mono',monospace;font-size:15px;font-weight:500;}
+.m-bar{height:3px;border-radius:2px;background:var(--bg);margin-top:6px;overflow:hidden;}
+.m-bar-f{height:100%;border-radius:2px;transition:width 0.6s ease;}
+.m-sub{font-size:9.5px;color:var(--text3);margin-top:3px;}
+
+/* TABLE DESKTOP */
+.tbl-wrap{display:none;background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
+@media(min-width:700px){.tbl-wrap{display:block;}}
+.tbl-scroll{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+thead th{
+  padding:11px 13px;text-align:left;
+  font-size:9.5px;letter-spacing:0.12em;font-weight:700;
+  color:var(--text3);text-transform:uppercase;
+  background:var(--bg2);border-bottom:1px solid var(--border);white-space:nowrap;
+}
+tbody tr{border-bottom:1px solid var(--border);transition:background 0.1s;}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:rgba(255,255,255,0.02);}
+tbody td{padding:10px 13px;font-size:12px;white-space:nowrap;vertical-align:middle;}
+.tbl-num{width:28px;height:28px;border-radius:7px;background:rgba(91,140,255,0.15);color:var(--primary);font-size:11px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;}
+.tbl-mapel{background:rgba(0,229,200,0.1);color:var(--cyan);border-radius:6px;padding:2px 9px;font-size:10.5px;font-weight:700;border:1px solid rgba(0,229,200,0.2);}
+.t-bar{display:flex;align-items:center;gap:7px;}
+.t-track{width:44px;height:4px;border-radius:3px;background:var(--bg3);overflow:hidden;flex-shrink:0;}
+.t-fill{height:100%;border-radius:3px;}
+.mono{font-family:'DM Mono',monospace;font-size:11.5px;}
+
+/* EMPTY / LOADING */
+#loading{display:none;text-align:center;padding:56px 0;}
+.spinner-ring{width:44px;height:44px;margin:0 auto 14px;border-radius:50%;border:3px solid var(--border);border-top-color:var(--primary);animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+#loading p{color:var(--text3);font-size:12.5px;margin-top:6px;}
+.loading-sub{color:var(--text3)!important;font-size:11px!important;margin-top:4px!important;}
+
+#empty{text-align:center;padding:56px 0;}
+.empty-icon{font-size:44px;margin-bottom:14px;display:block;}
+#empty p{color:var(--text3);font-size:13px;line-height:1.75;max-width:310px;margin:0 auto;}
 
 /* LEGEND */
-.legend {
-  background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
-  padding: 20px; margin-top: 18px; box-shadow: var(--shadow); display: none;
-  animation: fadeUp 0.4s ease both;
+.legend{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  padding:20px;margin-top:16px;display:none;
+  animation:fadeUp 0.4s ease both;
 }
-.legend-title { font-size: 11px; font-weight: 700; color: var(--text-2); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
-.legend-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px,1fr)); gap: 18px; }
-.legend-group h4 { font-size: 10.5px; font-weight: 700; color: var(--text-3); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
-.legend-item { font-size: 12px; color: var(--text-2); margin-bottom: 5px; display: flex; gap: 8px; }
-.legend-item strong { min-width: 88px; color: var(--text); font-weight: 600; }
+.legend-title{font-size:10px;font-weight:700;color:var(--text2);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.legend-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;}
+.legend-group h4{font-size:9.5px;font-weight:700;color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;}
+.legend-item{font-size:11.5px;color:var(--text2);margin-bottom:5px;display:flex;gap:8px;}
+.legend-item strong{min-width:82px;color:var(--text);font-weight:600;font-size:11px;}
 
-/* RESULTS SECTION */
-.results-wrap { animation: fadeUp 0.4s ease both 0.1s; }
+/* RESULTS */
+.results-wrap{animation:fadeUp 0.4s ease both 0.1s;}
 
-/* EXCEL CONFIG */
-.excel-config {
-  background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
-  padding: 16px 18px; margin-bottom: 16px; box-shadow: var(--shadow);
-  display: none; animation: fadeUp 0.4s ease both;
-}
-.excel-config h3 { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px; }
-.config-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-@media(max-width:600px) { .config-row { grid-template-columns: 1fr; } }
-.config-field { display: flex; flex-direction: column; gap: 6px; }
-.config-label { font-size: 12px; font-weight: 600; color: var(--text-2); }
-.config-field input[type="text"],
-.config-field input[type="file"] {
-  background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--radius-sm);
-  padding: 9px 12px; color: var(--text); font-family: inherit;
-  font-size: 13px; outline: none; cursor: pointer; transition: border-color 0.2s;
-}
-.config-field input[type="text"] { cursor: text; }
-.config-field input[type="text"]:focus,
-.config-field input[type="file"]:focus { border-color: var(--primary); }
-.config-file-label { display: inline-block; color: var(--text-3); font-size: 11px; margin-top: 4px; }
-
-@keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 </style>
 </head>
 <body>
 
-<div class="blob-wrap">
-  <div class="blob blob-1"></div>
-  <div class="blob blob-2"></div>
-  <div class="blob blob-3"></div>
+<div class="glow-wrap">
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  <div class="glow glow-3"></div>
 </div>
 
 <div class="wrap">
 
   <header>
-    <div class="chip">
-      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      Edu Analytics
+    <div class="logo-badge">
+      <span class="logo-dot"></span>
+      NERIZI EXAM SYSTEM
     </div>
-    <h1>Analisis Butir Soal</h1>
+    <h1>
+      <div class="h1-line1">Analisis Butir Soal</div>
+      <div class="h1-line2">Multi-Ruang Firebase</div>
+    </h1>
     <p>Tingkat Kesulitan · Daya Pembeda · Validitas · Reliabilitas</p>
   </header>
 
+  <!-- ACTION BUTTONS -->
   <div class="action-row">
-    <button class="btn-main" id="btnFetch" onclick="fetchData()">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-      Muat Data Ujian
+    <button class="btn-main" id="btnFetch" onclick="fetchAllData()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Ambil Data &amp; Analisis
     </button>
     <button class="btn-sec" onclick="loadDemo()">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      Coba Demo
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Demo
     </button>
   </div>
 
+  <!-- PROGRESS -->
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-title">Memuat Data Firebase</div>
+    <div class="progress-bars" id="progressBars"></div>
+    <div class="progress-summary" id="progressSummary"></div>
+  </div>
+
+  <!-- ERROR -->
   <div class="error-box" id="errorBox"></div>
 
-  <div id="loading">
-    <div class="spinner"></div>
-    <p>Mengambil data dari server &amp; menghitung analisis…</p>
-  </div>
-
+  <!-- EMPTY -->
   <div id="empty">
-    <span class="empty-icon">📊</span>
-    <p>Klik <strong>Muat Data Ujian</strong> untuk mengambil langsung dari sistem ujian, atau coba <strong>Demo</strong>.</p>
+    <span class="empty-icon">🔬</span>
+    <p>Pilih ruang ujian lalu klik <strong>Ambil Data &amp; Analisis</strong> untuk memulai analisis dari semua Firebase.</p>
   </div>
 
+  <!-- LOADING -->
+  <div id="loading">
+    <div class="spinner-ring"></div>
+    <p id="loadingMsg">Mengambil data dari Firebase…</p>
+    <p class="loading-sub" id="loadingSub"></p>
+  </div>
+
+  <!-- STATS -->
   <div class="stats-grid" id="statsGrid" style="display:none"></div>
 
+  <!-- FILTER -->
   <div class="filter-box" id="filterBox">
-    <h3>Filter Hasil</h3>
+    <div class="filter-title">Filter Hasil</div>
     <div class="filter-row">
       <div class="fg">
         <label>Mata Pelajaran</label>
@@ -312,7 +358,7 @@ tbody td { padding: 11px 14px; font-size: 12.5px; white-space: nowrap; vertical-
         <label>Status Soal</label>
         <select id="statusSelect" onchange="renderResults()">
           <option value="">Semua Status</option>
-          <option value="Baik">✅ Baik Digunakan</option>
+          <option value="Baik">✅ Baik</option>
           <option value="Revisi">⚠️ Perlu Revisi</option>
           <option value="Tolak">❌ Ditolak</option>
         </select>
@@ -320,40 +366,45 @@ tbody td { padding: 11px 14px; font-size: 12.5px; white-space: nowrap; vertical-
     </div>
   </div>
 
-  <div class="excel-config" id="excelConfig">
-    <h3>⚙️ Konfigurasi Excel</h3>
-    <div class="config-row">
-      <div class="config-field">
-        <label class="config-label">📋 Judul Laporan</label>
-        <input type="text" id="excelTitle" placeholder="Contoh: Analisis Butir Soal Ujian Tengah Semester" value="">
+  <!-- EXPORT CONFIG -->
+  <div class="export-config" id="exportConfig">
+    <h3>⚙️ Pengaturan Export</h3>
+    <div class="cfg-row">
+      <div class="cfg-field">
+        <label class="cfg-label">Judul Laporan</label>
+        <input type="text" id="excelTitle" placeholder="Analisis Butir Soal Ujian…">
       </div>
-      <div class="config-field">
-        <label class="config-label">🏫 Nama Sekolah/Institusi</label>
-        <input type="text" id="excelSchool" placeholder="Contoh: SMP Negeri 1 Cikalongkulon" value="">
+      <div class="cfg-field">
+        <label class="cfg-label">Nama Sekolah</label>
+        <input type="text" id="excelSchool" placeholder="SMP Negeri 1 Cikalongkulon">
       </div>
     </div>
   </div>
 
+  <!-- RESULTS -->
   <div class="results-wrap" id="resultsWrap" style="display:none">
     <div class="export-row">
-      <button class="btn-export" onclick="exportExcel()">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Export Excel
+      <button class="btn-exp" onclick="exportCSV()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        CSV
       </button>
-      <button class="btn-export" onclick="exportCSV()" style="margin-left: 8px;">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Export CSV
+      <button class="btn-exp" onclick="exportExcel()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Excel
       </button>
     </div>
+
     <div class="card-list"  id="cardList"></div>
     <div class="tbl-wrap">
       <div class="tbl-scroll">
         <table>
           <thead>
             <tr>
-              <th>No</th><th>Mata Pelajaran</th><th>Tingkat Kesulitan</th><th>Kat. TK</th>
-              <th>Daya Pembeda</th><th>Kat. DP</th><th>Validitas (r)</th><th>Kat. Val</th>
-              <th>Reliabilitas α</th><th>Status</th>
+              <th>No</th><th>Mapel</th>
+              <th>Kesulitan</th><th>Kat.TK</th>
+              <th>Daya Pembeda</th><th>Kat.DP</th>
+              <th>Validitas</th><th>Kat.Val</th>
+              <th>Cronbach α</th><th>Status</th>
             </tr>
           </thead>
           <tbody id="tableBody"></tbody>
@@ -362,6 +413,7 @@ tbody td { padding: 11px 14px; font-size: 12.5px; white-space: nowrap; vertical-
     </div>
   </div>
 
+  <!-- LEGEND -->
   <div class="legend" id="legendBox">
     <div class="legend-title">Panduan Interpretasi</div>
     <div class="legend-grid">
@@ -380,7 +432,7 @@ tbody td { padding: 11px 14px; font-size: 12.5px; white-space: nowrap; vertical-
         <div class="legend-item"><strong>≥ 0.70</strong>Sangat Baik ✓</div>
       </div>
       <div class="legend-group">
-        <h4>Validitas (r)</h4>
+        <h4>Validitas</h4>
         <div class="legend-item"><strong>r &lt; 0.20</strong>Sangat Rendah</div>
         <div class="legend-item"><strong>0.20 – 0.39</strong>Rendah</div>
         <div class="legend-item"><strong>0.40 – 0.59</strong>Cukup</div>
@@ -389,167 +441,294 @@ tbody td { padding: 11px 14px; font-size: 12.5px; white-space: nowrap; vertical-
       </div>
       <div class="legend-group">
         <h4>Status Soal</h4>
-        <div class="legend-item"><strong style="color:#059669">✅ Baik</strong>DP ≥ 0.20 &amp; TK 0.30–0.70</div>
-        <div class="legend-item"><strong style="color:#c2550d">⚠️ Revisi</strong>DP 0.10–0.19 atau TK luar range</div>
-        <div class="legend-item"><strong style="color:var(--danger)">❌ Tolak</strong>DP &lt; 0.10</div>
+        <div class="legend-item"><strong style="color:var(--green)">✅ Baik</strong>DP≥0.20 &amp; TK 0.30–0.70</div>
+        <div class="legend-item"><strong style="color:var(--amber)">⚠️ Revisi</strong>DP 0.10–0.19 / TK luar range</div>
+        <div class="legend-item"><strong style="color:var(--red)">❌ Tolak</strong>DP &lt; 0.10</div>
       </div>
     </div>
   </div>
 
-</div>
+</div><!-- /wrap -->
 
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
-// ── LIBRARY STATUS ──
-let xlsxReady = false;
-if(typeof XLSX !== 'undefined') xlsxReady = true;
-window.addEventListener('load', () => {
-  if(typeof XLSX !== 'undefined') xlsxReady = true;
-});
-setTimeout(() => {
-  if(typeof XLSX !== 'undefined') xlsxReady = true;
-}, 2000);
+// ── FIREBASE CONFIGS ──
+const LABS = [
+  {
+    key:'1-4', label:'Ruang 1–4',
+    databaseURL:'https://sistemujuajiannerizi1234-default-rtdb.asia-southeast1.firebasedatabase.app/',
+    apiKey:'AIzaSyDU9tIzZCNNAXBc2je6SUr7VszvdIKe7ig',
+  },
+  {
+    key:'5-8', label:'Ruang 5–8',
+    databaseURL:'https://sistemujuajiannerizi5678-default-rtdb.asia-southeast1.firebasedatabase.app/',
+    apiKey:'AIzaSyAdak3tqK7ICsRKkBmkXlmrBaIdEU7aV4I',
+  },
+  {
+    key:'9-12', label:'Ruang 9–12',
+    databaseURL:'https://sistemujuajiannerizi9-12-default-rtdb.asia-southeast1.firebasedatabase.app/',
+    apiKey:'AIzaSyAX2Gcrp5NdybX7tLs2jM7mmly_Y8OXosQ',
+  },
+  {
+    key:'13-16', label:'Ruang 13–16',
+    databaseURL:'https://sistemujuajiannerizi13-16-default-rtdb.asia-southeast1.firebasedatabase.app/',
+    apiKey:'AIzaSyAtFC2WSbM4k22Pb5jUBdKFcITmf1J_6jM',
+  },
+  {
+    key:'17-19', label:'Ruang 17–19',
+    databaseURL:'https://sistemujuajiannerizi-default-rtdb.asia-southeast1.firebasedatabase.app',
+    apiKey:'AIzaSyBuQM8hK_M4shCWNbV8ZaGFLEbGmQ627QU',
+  },
+];
 
-// ── HARDCODED GAS URL ──
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbyuuYX2x8nL4oKVcLf5lZq_L8_4vX5rJqMzFwzyzPyZdedcbbS5zsi__MbJ1S4s1WLW/exec';
+// ── STATE ──
+let ALL = []; // analysis results
 
-// ─── ANALYSIS ───
-function pJ(r) {
-  if (!r) return {};
-  if (typeof r === 'object') return r;
-  try { return JSON.parse(r); } catch(e) { return {}; }
+// ── FIREBASE REST FETCH ──
+async function fetchFirebase(lab) {
+  const url = lab.databaseURL.replace(/\/$/, '') + '/hasil.json?auth=' + lab.apiKey;
+  const res = await fetch(url, {signal: AbortSignal.timeout(15000)});
+  if(!res.ok) throw new Error('HTTP ' + res.status);
+  const json = await res.json();
+  return json; // {kodeMapel: {noPeserta: {...}}}
 }
 
-function tk(responses) {
-  const n = responses.length;
-  return responses[0].s.map((_, i) => responses.filter(r => r.s[i]===1).length / n);
+// ── PARSE FIREBASE DATA ──
+// Returns flat array of student answer rows
+function parseFbData(fbData, roomLabel) {
+  if(!fbData || typeof fbData !== 'object') return [];
+  const rows = [];
+  for(const kodeMapel of Object.keys(fbData)) {
+    const byPeserta = fbData[kodeMapel];
+    if(!byPeserta || typeof byPeserta !== 'object') continue;
+    for(const np of Object.keys(byPeserta)) {
+      const r = byPeserta[np];
+      if(!r) continue;
+      rows.push({
+        no: np,
+        mataPelajaran: r.mataPelajaran || r.kodeMapel || kodeMapel,
+        jawabanSiswa: r.jawabanSiswa || r.jawaban_siswa || '{}',
+        kunciJawaban: r.kunciJawaban || r.kunci_jawaban || '{}',
+        ruang: roomLabel,
+        nama: r.nama || '',
+        kelas: r.kelas || '',
+      });
+    }
+  }
+  return rows;
 }
 
-function dp(responses, nQ) {
-  const n = responses.length, h = Math.floor(n/2);
-  if (!h) return Array(nQ).fill(0);
-  const sorted = [...responses].sort((a,b)=>b.t-a.t);
-  const up = sorted.slice(0,h), dn = sorted.slice(n-h);
-  return Array.from({length:nQ},(_,i)=>(up.filter(r=>r.s[i]===1).length - dn.filter(r=>r.s[i]===1).length)/h);
+// ── ANALYSIS FUNCTIONS ──
+function safeJSON(s) {
+  if(!s) return {};
+  if(typeof s === 'object') return s;
+  try { return JSON.parse(s); } catch(e) { return {}; }
 }
 
-function val(responses, nQ) {
-  if (responses.length<2) return Array(nQ).fill(0);
-  const tots = responses.map(r=>r.t);
-  const mT = tots.reduce((a,b)=>a+b,0)/tots.length;
-  const sdT = Math.sqrt(tots.reduce((a,b)=>a+(b-mT)**2,0)/tots.length)||1;
-  return Array.from({length:nQ},(_,i)=>{
-    const ok = responses.filter(r=>r.s[i]===1);
-    const p = ok.length/responses.length, q=1-p;
+function analyzeMapel(rows) {
+  // Find kunci from first row that has it
+  let kunci = {};
+  for(const r of rows) {
+    const k = safeJSON(r.kunciJawaban);
+    if(Object.keys(k).length) { kunci = k; break; }
+  }
+  const keys = Object.keys(kunci).sort((a,b)=>+a-+b);
+  const nQ = keys.length;
+  if(!nQ) return [];
+
+  // Build response matrix
+  const resp = rows.map(row => {
+    const js = safeJSON(row.jawabanSiswa);
+    const s = keys.map(k =>
+      (js[k]||'').toString().toUpperCase() === (kunci[k]||'').toString().toUpperCase() ? 1 : 0
+    );
+    return { s, t: s.reduce((a,b)=>a+b,0) };
+  });
+
+  // Tingkat Kesulitan
+  const n = resp.length;
+  const tkArr = keys.map((_,i) => resp.filter(r=>r.s[i]===1).length / n);
+
+  // Daya Pembeda
+  const h = Math.floor(n/2);
+  const dpArr = (() => {
+    if(!h) return Array(nQ).fill(0);
+    const sorted = [...resp].sort((a,b)=>b.t-a.t);
+    const up = sorted.slice(0,h), dn = sorted.slice(n-h);
+    return keys.map((_,i) =>
+      (up.filter(r=>r.s[i]===1).length - dn.filter(r=>r.s[i]===1).length) / h
+    );
+  })();
+
+  // Validitas (point biserial)
+  const tots = resp.map(r=>r.t);
+  const mT = tots.reduce((a,b)=>a+b,0)/n;
+  const sdT = Math.sqrt(tots.reduce((a,b)=>a+(b-mT)**2,0)/n)||1;
+  const valArr = keys.map((_,i) => {
+    const p = resp.filter(r=>r.s[i]===1).length/n, q=1-p;
     if(!p||p===1) return 0;
-    const mB = ok.reduce((a,r)=>a+r.t,0)/ok.length;
+    const mB = resp.filter(r=>r.s[i]===1).reduce((a,r)=>a+r.t,0)/resp.filter(r=>r.s[i]===1).length;
     return ((mB-mT)/sdT)*Math.sqrt(p/q);
   });
+
+  // Cronbach Alpha
+  const sv = keys.map((_,i)=>{const v=resp.map(r=>r.s[i]),m=v.reduce((a,b)=>a+b,0)/n;return v.reduce((a,b)=>a+(b-m)**2,0)/n;});
+  const mTt=tots.reduce((a,b)=>a+b,0)/n, vT=tots.reduce((a,b)=>a+(b-mTt)**2,0)/n;
+  const cronbach = (vT===0||nQ<2)?0:(nQ/(nQ-1))*(1-sv.reduce((a,b)=>a+b,0)/vT);
+
+  return keys.map((k,i) => ({
+    no: k,
+    tk: tkArr[i],   tkK: kTK(tkArr[i]),
+    dp: dpArr[i],   dpK: kDP(dpArr[i]),
+    v: valArr[i],   vK: kVal(valArr[i]),
+    a: cronbach,
+    st: kStat(dpArr[i], tkArr[i]),
+  }));
 }
 
-function alpha(responses, nQ) {
-  if (responses.length<2||nQ<2) return 0;
-  const n=responses.length;
-  const sv = Array.from({length:nQ},(_,i)=>{
-    const v=responses.map(r=>r.s[i]), m=v.reduce((a,b)=>a+b,0)/n;
-    return v.reduce((a,b)=>a+(b-m)**2,0)/n;
-  });
-  const tots=responses.map(r=>r.t), mT=tots.reduce((a,b)=>a+b,0)/n;
-  const vT=tots.reduce((a,b)=>a+(b-mT)**2,0)/n;
-  return vT===0?0:(nQ/(nQ-1))*(1-sv.reduce((a,b)=>a+b,0)/vT);
-}
+const kTK  = p => p<.30?'Sukar':p<=.70?'Sedang':'Mudah';
+const kDP  = d => d<.10?'Sangat Jelek':d<.20?'Jelek':d<.40?'Cukup':d<.70?'Baik':'Sangat Baik';
+const kVal = r => {const v=Math.abs(r);return v<.20?'Sangat Rendah':v<.40?'Rendah':v<.60?'Cukup':v<.80?'Tinggi':'Sangat Tinggi';};
+const kStat= (d,p)=>d<.10?'Tolak':(d>=.20&&p>=.30&&p<=.70)?'Baik':'Revisi';
 
-const kTK  = p  => p<.30?'Sukar':p<=.70?'Sedang':'Mudah';
-const kDP  = d  => d<.10?'Sangat Jelek':d<.20?'Jelek':d<.40?'Cukup':d<.70?'Baik':'Sangat Baik';
-const kVal = r  => {const v=Math.abs(r); return v<.20?'Sangat Rendah':v<.40?'Rendah':v<.60?'Cukup':v<.80?'Tinggi':'Sangat Tinggi';};
-const stat = (d,p)=> d<.10?'Tolak':(d>=.20&&p>=.30&&p<=.70)?'Baik':'Revisi';
-
-function prosesMapel(rows, nama) {
-  let kunci={};
-  for(const r of rows){const k=pJ(r['kunci jawaban']); if(Object.keys(k).length){kunci=k;break;}}
-  const keys=Object.keys(kunci).sort((a,b)=>+a-+b), nQ=keys.length;
-  if(!nQ) return [];
-  const resp=rows.map(row=>{
-    const js=pJ(row['jawaban siswa']);
-    const s=keys.map(k=>(js[k]||'').toString().toUpperCase()===(kunci[k]||'').toString().toUpperCase()?1:0);
-    return{s,t:s.reduce((a,b)=>a+b,0)};
-  });
-  const tkA=tk(resp),dpA=dp(resp,nQ),vA=val(resp,nQ),a=alpha(resp,nQ);
-  return keys.map((k,i)=>({no:k,mapel:nama,tk:tkA[i],tkK:kTK(tkA[i]),dp:dpA[i],dpK:kDP(dpA[i]),v:vA[i],vK:kVal(vA[i]),a,st:stat(dpA[i],tkA[i])}));
-}
-
-// ─── STATE ───
-let ALL = [];
-
-async function fetchData() {
+// ── MAIN FETCH ──
+async function fetchAllData() {
+  ALL = [];
   setLoad(true); hideErr();
-  try {
-    const res  = await fetch(`${GAS_URL}?action=getHasil`);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const json = await res.json();
-    if (!json.success) throw new Error(json.message||'GAS error');
-    const arr  = json.hasil;
-    if (!Array.isArray(arr)||!arr.length) throw new Error('Belum ada data hasil ujian. Pastikan siswa sudah submit ujian.');
-    process(arr);
-  } catch(e){ showErr(e.message); setLoad(false); }
-}
+  show('progressWrap');
+  document.getElementById('empty').style.display='none';
+  document.getElementById('statsGrid').style.display='none';
+  document.getElementById('filterBox').style.display='none';
+  document.getElementById('exportConfig').style.display='none';
+  document.getElementById('resultsWrap').style.display='none';
+  document.getElementById('legendBox').style.display='none';
 
-function loadDemo() {
-  const kunci={"1":"A","2":"B","3":"C","4":"A","5":"B","6":"D","7":"A","8":"C","9":"B","10":"A"};
-  const mapels=[{n:'Matematika'},{n:'Bhs. Indonesia'},{n:'IPA'}];
-  const arr=[];
-  mapels.forEach(({n})=>{
-    for(let s=0;s<30;s++){
-      const js={};
-      Object.keys(kunci).forEach(k=>{
-        const o=['A','B','C','D'];
-        js[k]=Math.random()<(s<10?.85:s<20?.60:.35)?kunci[k]:o[Math.floor(Math.random()*4)];
+  // Init progress bars
+  const pbWrap = document.getElementById('progressBars');
+  pbWrap.innerHTML = LABS.map(lab => `
+    <div class="pbar-item" id="pbar-${lab.key}">
+      <div class="pbar-label">
+        <span>${lab.label}</span>
+        <span id="pbar-status-${lab.key}" style="color:var(--text3)">Menunggu…</span>
+      </div>
+      <div class="pbar-track"><div class="pbar-fill" id="pbar-fill-${lab.key}" style="width:0%"></div></div>
+    </div>`).join('');
+
+  let doneCount = 0, errCount = 0, totalRows = 0;
+
+  const results = await Promise.allSettled(
+    LABS.map(async lab => {
+      updatePBar(lab.key, 30, 'Menghubungkan…', '');
+      const fbData = await fetchFirebase(lab);
+      updatePBar(lab.key, 70, 'Parsing data…', '');
+      const rows = parseFbData(fbData, lab.label);
+      updatePBar(lab.key, 85, 'Menganalisis…', '');
+
+      const byMapel = {};
+      rows.forEach(r => {
+        const m = r.mataPelajaran;
+        if(!byMapel[m]) byMapel[m] = [];
+        byMapel[m].push(r);
       });
-      arr.push({'mata pelajaran':n,'jawaban siswa':JSON.stringify(js),'kunci jawaban':JSON.stringify(kunci),'hasil':0});
+
+      const items = [];
+      for(const [mapel, mRows] of Object.entries(byMapel)) {
+        analyzeMapel(mRows).forEach(item => items.push({ ...item, mapel, ruang: lab.label }));
+      }
+
+      updatePBar(lab.key, 100, `✓ ${rows.length} siswa`, 'done');
+      return { lab, rows: rows.length, items };
+    })
+  );
+
+  results.forEach((r, idx) => {
+    const lab = LABS[idx];
+    if(r.status === 'fulfilled') {
+      totalRows += r.value.rows;
+      ALL.push(...r.value.items);
+      doneCount++;
+    } else {
+      errCount++;
+      updatePBar(lab.key, 100, '✗ Gagal: ' + (r.reason?.message||'Error'), 'err');
     }
   });
-  process(arr);
-}
 
-function process(arr) {
-  const g={};
-  arr.forEach(r=>{const m=r['mata pelajaran']||'Tidak Diketahui'; if(!g[m])g[m]=[]; g[m].push(r);});
-  ALL=[];
-  let hasKey=false;
-  Object.entries(g).forEach(([n,rows])=>{
-    if(!Object.keys(pJ(rows[0]['kunci jawaban'])).length) return;
-    hasKey=true; ALL.push(...prosesMapel(rows,n));
-  });
+  document.getElementById('progressSummary').textContent =
+    `${doneCount}/${LABS.length} ruang berhasil · ${totalRows} data siswa · ${ALL.length} butir soal dianalisis`;
+
   setLoad(false);
-  if(!hasKey){
-    showErr('Server tidak mengembalikan "kunci jawaban". Tambahkan field tersebut ke fungsi getHasil di GAS lalu re-deploy. Gunakan Demo untuk melihat contoh tampilan.');
+
+  if(!ALL.length) {
+    if(errCount === LABS.length) showErr('Semua Firebase gagal diakses. Periksa API key & koneksi internet.');
+    else showErr('Data berhasil diambil tapi tidak ada butir soal yang dapat dianalisis. Pastikan kunci jawaban tersimpan di Firebase.');
     return;
   }
+
   renderStats(); renderFilter(); renderResults();
-  show('filterBox'); show('excelConfig'); show('resultsWrap'); show('legendBox');
-  document.getElementById('empty').style.display='none';
+  show('filterBox'); show('exportConfig'); show('resultsWrap'); show('legendBox');
 }
 
-// ─── RENDER STATS ───
-function renderStats(){
-  const tot=ALL.length,baik=ALL.filter(r=>r.st==='Baik').length,rev=ALL.filter(r=>r.st==='Revisi').length,tol=ALL.filter(r=>r.st==='Tolak').length;
-  const avg=tot?(ALL.reduce((a,b)=>a+b.a,0)/tot).toFixed(3):'—';
+function updatePBar(key, pct, statusText, state) {
+  const fill = document.getElementById('pbar-fill-'+key);
+  const stat = document.getElementById('pbar-status-'+key);
+  if(fill) { fill.style.width=pct+'%'; if(state==='done') fill.classList.add('done-fill'); if(state==='err') fill.classList.add('err-fill'); }
+  if(stat) { stat.textContent=statusText; if(state==='done') stat.style.color='var(--green)'; if(state==='err') stat.style.color='var(--red)'; }
+}
+
+// ── DEMO ──
+function loadDemo() {
+  const kunci={"1":"A","2":"B","3":"C","4":"A","5":"B","6":"D","7":"A","8":"C","9":"B","10":"A"};
+  const mapels=['Matematika','Bhs. Indonesia','IPA'];
+  const rooms=['Ruang 1–4','Ruang 5–8','Ruang 9–12'];
+  ALL = [];
+  document.getElementById('progressWrap').style.display='none';
+  document.getElementById('empty').style.display='none';
+
+  rooms.forEach(ruang => {
+    mapels.forEach(mapel => {
+      const rows = Array.from({length:25}, (_,s) => {
+        const js={};
+        Object.keys(kunci).forEach(k=>{
+          const opts=['A','B','C','D'];
+          js[k] = Math.random()<(s<8?.9:s<17?.65:.35)?kunci[k]:opts[Math.floor(Math.random()*4)];
+        });
+        return {jawabanSiswa:JSON.stringify(js), kunciJawaban:JSON.stringify(kunci)};
+      });
+
+      const byMapel = {[mapel]: rows};
+      for(const [m, mRows] of Object.entries(byMapel)) {
+        analyzeMapel(mRows).forEach(item => ALL.push({...item, mapel:m, ruang}));
+      }
+    });
+  });
+
+  renderStats(); renderFilter(); renderResults();
+  show('filterBox'); show('exportConfig'); show('resultsWrap'); show('legendBox');
+}
+
+// ── RENDER STATS ──
+function renderStats() {
+  const tot=ALL.length;
+  const baik=ALL.filter(r=>r.st==='Baik').length;
+  const rev=ALL.filter(r=>r.st==='Revisi').length;
+  const tol=ALL.filter(r=>r.st==='Tolak').length;
+  const avga=tot?(ALL.reduce((a,b)=>a+b.a,0)/tot).toFixed(3):'—';
   const g=document.getElementById('statsGrid');
   g.style.display='grid';
   g.innerHTML=`
-    <div class="stat-card" style="--ac:var(--primary)"><span class="stat-ico">📝</span><div class="stat-val">${tot}</div><div class="stat-lbl">Total Soal</div></div>
-    <div class="stat-card" style="--ac:#059669"><span class="stat-ico">✅</span><div class="stat-val" style="color:#059669">${baik}</div><div class="stat-lbl">Baik</div></div>
-    <div class="stat-card" style="--ac:var(--warn)"><span class="stat-ico">⚠️</span><div class="stat-val" style="color:var(--warn)">${rev}</div><div class="stat-lbl">Perlu Revisi</div></div>
-    <div class="stat-card" style="--ac:var(--danger)"><span class="stat-ico">❌</span><div class="stat-val" style="color:var(--danger)">${tol}</div><div class="stat-lbl">Ditolak</div></div>
-    <div class="stat-card" style="--ac:var(--purple)"><span class="stat-ico">🔬</span><div class="stat-val" style="color:var(--purple);font-size:20px">${avg}</div><div class="stat-lbl">Cronbach α</div></div>`;
+    <div class="stat-card" style="--ac:var(--primary)"><span class="stat-ico">📝</span><div class="stat-val" style="color:var(--primary)">${tot}</div><div class="stat-lbl">Total Soal</div></div>
+    <div class="stat-card" style="--ac:var(--green)"><span class="stat-ico">✅</span><div class="stat-val" style="color:var(--green)">${baik}</div><div class="stat-lbl">Baik</div></div>
+    <div class="stat-card" style="--ac:var(--amber)"><span class="stat-ico">⚠️</span><div class="stat-val" style="color:var(--amber)">${rev}</div><div class="stat-lbl">Revisi</div></div>
+    <div class="stat-card" style="--ac:var(--red)"><span class="stat-ico">❌</span><div class="stat-val" style="color:var(--red)">${tol}</div><div class="stat-lbl">Ditolak</div></div>
+    <div class="stat-card" style="--ac:var(--purple)"><span class="stat-ico">🔬</span><div class="stat-val" style="color:var(--purple);font-size:18px">${avga}</div><div class="stat-lbl">Cronbach α</div></div>`;
 }
 
-function renderFilter(){
+function renderFilter() {
   const mapels=[...new Set(ALL.map(r=>r.mapel))];
   document.getElementById('mapelSelect').innerHTML='<option value="">Semua Mapel</option>'+mapels.map(m=>`<option value="${m}">${m}</option>`).join('');
 }
 
-function renderResults(){
+function renderResults() {
   const mf=document.getElementById('mapelSelect').value;
   const sf=document.getElementById('statusSelect').value;
   let data=ALL;
@@ -558,16 +737,16 @@ function renderResults(){
   renderCards(data); renderTable(data);
 }
 
-// ─── COLORS ───
-const cTK=v=>v<.30?'#ef476f':v<=.70?'#06d6a0':'#4361ee';
-const cDP=v=>v<.20?'#ef476f':v<.40?'#f4a261':'#06d6a0';
-const cV =v=>{const a=Math.abs(v);return a<.40?'#ef476f':a<.60?'#f4a261':'#06d6a0';};
+// ── COLORS ──
+const cTK=v=>v<.30?'var(--red)':v<=.70?'var(--green)':'var(--primary)';
+const cDP=v=>v<.20?'var(--red)':v<.40?'var(--amber)':'var(--green)';
+const cV =v=>{const a=Math.abs(v);return a<.40?'var(--red)':a<.60?'var(--amber)':'var(--green)';};
 const bCls=s=>s==='Baik'?'b-baik':s==='Revisi'?'b-revisi':'b-tolak';
 const bLbl=s=>s==='Baik'?'✅ Baik':s==='Revisi'?'⚠️ Revisi':'❌ Tolak';
 
-function renderCards(data){
+function renderCards(data) {
   const el=document.getElementById('cardList');
-  if(!data.length){el.innerHTML=`<div style="text-align:center;padding:36px;color:var(--text-3);font-size:14px">Tidak ada soal untuk filter ini.</div>`;return;}
+  if(!data.length){el.innerHTML=`<div style="text-align:center;padding:36px;color:var(--text3);font-size:13px">Tidak ada soal untuk filter ini.</div>`;return;}
   el.innerHTML=data.map(r=>`
     <div class="soal-card">
       <div class="card-top">
@@ -605,148 +784,78 @@ function renderCards(data){
     </div>`).join('');
 }
 
-function renderTable(data){
+function renderTable(data) {
   const tb=document.getElementById('tableBody');
-  if(!data.length){tb.innerHTML=`<tr><td colspan="10" style="text-align:center;padding:30px;color:var(--text-3)">Tidak ada soal untuk filter ini.</td></tr>`;return;}
+  if(!data.length){tb.innerHTML=`<tr><td colspan="10" style="text-align:center;padding:28px;color:var(--text3)">Tidak ada soal untuk filter ini.</td></tr>`;return;}
   tb.innerHTML=data.map(r=>`
     <tr>
       <td><div class="tbl-num">${r.no}</div></td>
       <td><span class="tbl-mapel">${r.mapel}</span></td>
       <td><div class="t-bar"><div class="t-track"><div class="t-fill" style="width:${(r.tk*100).toFixed(1)}%;background:${cTK(r.tk)}"></div></div><span class="mono" style="color:${cTK(r.tk)}">${(r.tk*100).toFixed(1)}%</span></div></td>
-      <td style="color:${cTK(r.tk)};font-weight:600;font-size:11.5px">${r.tkK}</td>
+      <td style="color:${cTK(r.tk)};font-weight:600;font-size:11px">${r.tkK}</td>
       <td><div class="t-bar"><div class="t-track"><div class="t-fill" style="width:${Math.max(0,r.dp*100).toFixed(1)}%;background:${cDP(r.dp)}"></div></div><span class="mono" style="color:${cDP(r.dp)}">${r.dp.toFixed(2)}</span></div></td>
-      <td style="color:${cDP(r.dp)};font-weight:600;font-size:11.5px">${r.dpK}</td>
+      <td style="color:${cDP(r.dp)};font-weight:600;font-size:11px">${r.dpK}</td>
       <td><div class="t-bar"><div class="t-track"><div class="t-fill" style="width:${Math.min(100,Math.abs(r.v)*100).toFixed(1)}%;background:${cV(r.v)}"></div></div><span class="mono" style="color:${cV(r.v)}">${r.v.toFixed(2)}</span></div></td>
-      <td style="color:${cV(r.v)};font-weight:600;font-size:11.5px">${r.vK}</td>
+      <td style="color:${cV(r.v)};font-weight:600;font-size:11px">${r.vK}</td>
       <td class="mono" style="color:var(--purple)">${r.a.toFixed(3)}</td>
       <td><span class="badge ${bCls(r.st)}">${bLbl(r.st)}</span></td>
     </tr>`).join('');
 }
 
-// ─── EXPORT ───
-function exportCSV(){
+function exportCSV() {
   if(!ALL.length){alert('Tidak ada data.');return;}
   const hdr=['No Soal','Mata Pelajaran','TK (%)','Kat. TK','Daya Pembeda','Kat. DP','Validitas','Kat. Val','Cronbach α','Status'];
   const rows=ALL.map(r=>[r.no,r.mapel,(r.tk*100).toFixed(2),r.tkK,r.dp.toFixed(3),r.dpK,r.v.toFixed(3),r.vK,r.a.toFixed(3),r.st==='Baik'?'Baik Digunakan':r.st==='Revisi'?'Perlu Revisi':'Ditolak']);
   const csv=[hdr,...rows].map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');
   const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
-  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='analisis_butir_soal.csv'; a.click();
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='analisis_butir_soal.csv';a.click();
 }
 
 function exportExcel(){
-  try {
+  try{
     if(!ALL.length){alert('Tidak ada data.');return;}
-    
-    if(!xlsxReady || typeof XLSX === 'undefined'){
-      alert('Library Excel sedang dimuat, silakan tunggu 2 detik lalu coba lagi.');
-      if(typeof XLSX === 'undefined'){
-        const script=document.createElement('script');
-        script.src='https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';
-        script.onload=()=>{xlsxReady=true;};
-        script.onerror=()=>{alert('Gagal memuat library Excel dari CDN. Periksa koneksi internet Anda.');};
-        document.head.appendChild(script);
-      }
-      return;
-    }
-    
-    // Get title and school from inputs
-    const excelTitle = document.getElementById('excelTitle').value || 'Analisis Butir Soal';
-    const excelSchool = document.getElementById('excelSchool').value || '';
-    const numCols = 10;
-    
-    // Create data structure
-    const headerRows = [];
-    if(excelTitle) headerRows.push(Array(numCols).fill(excelTitle));
-    if(excelSchool) headerRows.push(Array(numCols).fill(excelSchool));
-    if(headerRows.length > 0) headerRows.push(Array(numCols).fill(''));
-    
-    // Main data
+    if(typeof XLSX==='undefined'){alert('Library Excel belum siap. Tunggu 2 detik lalu coba lagi.');return;}
+    const title=document.getElementById('excelTitle').value||'Analisis Butir Soal';
+    const school=document.getElementById('excelSchool').value||'';
+    const numCols=10;
+    const headerRows=[];
+    if(title) headerRows.push(Array(numCols).fill(title));
+    if(school) headerRows.push(Array(numCols).fill(school));
+    if(headerRows.length) headerRows.push(Array(numCols).fill(''));
     const hdr=['No Soal','Mata Pelajaran','TK (%)','Kat. TK','Daya Pembeda','Kat. DP','Validitas','Kat. Val','Cronbach α','Status'];
     const rows=ALL.map(r=>[r.no,r.mapel,(r.tk*100).toFixed(2),r.tkK,r.dp.toFixed(3),r.dpK,r.v.toFixed(3),r.vK,r.a.toFixed(3),r.st==='Baik'?'Baik Digunakan':r.st==='Revisi'?'Perlu Revisi':'Ditolak']);
-    const data=[...headerRows, hdr, ...rows];
-    
-    // Create worksheet
+    const data=[...headerRows,hdr,...rows];
     const ws=XLSX.utils.aoa_to_sheet(data);
-    ws['!cols']=[{wch:10},{wch:18},{wch:12},{wch:12},{wch:15},{wch:12},{wch:12},{wch:12},{wch:12},{wch:15}];
-    
-    // Define border object yang proper untuk XLSX
-    const createBorder = () => ({
-      top: {style: 'thin', color: {rgb: '000000'}},
-      bottom: {style: 'thin', color: {rgb: '000000'}},
-      left: {style: 'thin', color: {rgb: '000000'}},
-      right: {style: 'thin', color: {rgb: '000000'}}
+    ws['!cols']=[{wch:10},{wch:18},{wch:10},{wch:12},{wch:14},{wch:12},{wch:10},{wch:12},{wch:12},{wch:14}];
+    const border={top:{style:'thin'},bottom:{style:'thin'},left:{style:'thin'},right:{style:'thin'}};
+    data.forEach((row,ri)=>{
+      row.forEach((_,ci)=>{
+        const ref=XLSX.utils.encode_cell({r:ri,c:ci});
+        const cell=ws[ref]; if(!cell) return;
+        const isTitle=(title&&ri===0), isSchool=(school&&ri===(title?1:0));
+        const isHdr=ri===headerRows.length;
+        if(isTitle) cell.s={font:{bold:true,size:14,color:{rgb:'FFFFFF'}},fill:{fgColor:{rgb:'1A1D30'}},alignment:{horizontal:'center'},border};
+        else if(isSchool) cell.s={font:{bold:true,size:12,color:{rgb:'FFFFFF'}},fill:{fgColor:{rgb:'3D6FF0'}},alignment:{horizontal:'center'},border};
+        else if(isHdr) cell.s={font:{bold:true,color:{rgb:'FFFFFF'}},fill:{fgColor:{rgb:'5B8CFF'}},alignment:{horizontal:'center'},border};
+        else cell.s={alignment:{horizontal:ci<2?'left':'center'},border};
+      });
     });
-    
-    // Process all cells
-    for(let row = 0; row < data.length; row++) {
-      for(let col = 0; col < numCols; col++) {
-        const cellRef = XLSX.utils.encode_cell({r: row, c: col});
-        const cell = ws[cellRef];
-        if(!cell) continue;
-        
-        const border = createBorder();
-        
-        // Title row styling
-        if(excelTitle && row === 0) {
-          cell.s = {
-            font: {bold: true, size: 14, color: {rgb: 'FFFFFF'}},
-            fill: {fgColor: {rgb: '4361EE'}},
-            alignment: {horizontal: 'center', vertical: 'center', wrapText: true},
-            border
-          };
-        }
-        // School row styling
-        else if(excelSchool && row === (excelTitle ? 1 : 0)) {
-          cell.s = {
-            font: {bold: true, size: 12, color: {rgb: 'FFFFFF'}},
-            fill: {fgColor: {rgb: '6D4AFF'}},
-            alignment: {horizontal: 'center', vertical: 'center', wrapText: true},
-            border
-          };
-        }
-        // Empty spacing row
-        else if(row === headerRows.length - 1) {
-          cell.s = {border};
-        }
-        // Header row
-        else if(row === headerRows.length) {
-          cell.s = {
-            font: {bold: true, color: {rgb: 'FFFFFF'}},
-            fill: {fgColor: {rgb: '4361EE'}},
-            alignment: {horizontal: 'center', vertical: 'center'},
-            border
-          };
-        }
-        // Data rows
-        else {
-          const isTextCol = col === 0 || col === 1;
-          cell.s = {
-            alignment: {horizontal: isTextCol ? 'left' : 'center', vertical: 'center'},
-            border
-          };
-        }
-      }
-    }
-    
-    // Create workbook
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Analisis Butir Soal');
-    XLSX.writeFile(wb, 'analisis_butir_soal.xlsx');
-  } catch(err) {
-    console.error('Export Error:', err);
-    alert('Error: ' + err.message);
-  }
+    const wb=XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb,ws,'Analisis Butir Soal');
+    XLSX.writeFile(wb,'analisis_butir_soal.xlsx');
+  }catch(err){console.error(err);alert('Export error: '+err.message);}
 }
 
-// ─── UTILS ───
+// ── UTILS ──
 function setLoad(on){
   document.getElementById('loading').style.display=on?'block':'none';
   document.getElementById('btnFetch').disabled=on;
-  if(on) document.getElementById('empty').style.display='none';
 }
-function showErr(msg){ const b=document.getElementById('errorBox'); b.innerHTML=`<strong>⚠ Error:</strong> ${msg}`; b.style.display='block'; }
-function hideErr(){ document.getElementById('errorBox').style.display='none'; }
-function show(id){ document.getElementById(id).style.display='block'; }
+function showErr(m){const b=document.getElementById('errorBox');b.innerHTML=`<strong>⚠ Error:</strong> ${m}`;b.style.display='block';}
+function hideErr(){document.getElementById('errorBox').style.display='none';}
+function show(id){document.getElementById(id).style.display='block';}
+
+// ── INIT ──
 </script>
 </body>
 </html>
